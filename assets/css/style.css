@@ -1896,4 +1896,10 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .timeline-text { max-width: 700px; }
 
+  #view-counter {
+    color: white;
+    font-size: 1.1rem;     /* Slightly larger */
+    /* font-weight: bold;     Bold text */
+  }
+  
 }

@@ -14,12 +14,12 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // === MySQL RDS Connection ===
-const db = mysql.createConnection({
-  host: 'contact-db.cpgm80w8w4t1.ap-south-1.rds.amazonaws.com',
-  user: 'admin',
-  password: 'India#0504', // Use your actual password securely
-  database: 'contact_db'
-});
+// const db = mysql.createConnection({
+//   host: 'contact-db.cpgm80w8w4t1.ap-south-1.rds.amazonaws.com',
+//   user: 'user',
+//   password: 'pswd', // Use your actual password securely
+//   database: 'db_name'
+// });
 
 db.connect(err => {
   if (err) console.error('MySQL connection error:', err);
@@ -27,10 +27,10 @@ db.connect(err => {
 });
 
 // === Basic Auth Middleware for Admin Panel ===
-const adminAuth = (req, res, next) => {
-  const user = auth(req);
-  const username = 'admin';
-  const password = 'bharat123'; // Change this to your secure password
+// const adminAuth = (req, res, next) => {
+//   const user = auth(req);
+//   const username = 'admin';
+//   const password = 'pswd'; // Change this to your secure password
 
   if (user && user.name === username && user.pass === password) {
     return next();
@@ -57,14 +57,14 @@ app.post('/api/contact', async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'india.indraq@gmail.com',
-        pass: 'crbh bnec phpr xpra' // Gmail app password
+        user: 'email@gmail.com',
+        pass: 'pswd' // Gmail app password
       }
     });
 
     const mailOptions = {
-      from: 'india.indraq@gmail.com',
-      to: '99bharat77@gmail.com',
+      from: 'gmail.com',
+      to: 'gmail.com',
       subject: `Message from ${name}`,
       text: `You received a message from:\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
       replyTo: email

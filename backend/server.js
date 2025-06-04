@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 // === MySQL RDS Connection ===
 // const db = mysql.createConnection({
-//   host: 'contact-db.cpgm80w8w4t1.ap-south-1.rds.amazonaws.com',
+//   host: 'rdsendpoint',
 //   user: 'user',
 //   password: 'pswd', // Use your actual password securely
 //   database: 'db_name'

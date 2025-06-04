@@ -8,7 +8,7 @@ const auth = require('basic-auth');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = port;
 
 app.use(cors());
 app.use(bodyParser.json());

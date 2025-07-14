@@ -1,0 +1,108 @@
+# k8s/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resume-web-deployment
+  namespace: default
+  labels:
+    app: resume-web
+    version: v1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: resume-web
+  template:
+    metadata:
+      labels:
+        app: resume-web
+        version: v1
+    spec:
+      containers:
+      - name: resume-web
+        image: resume-web-app:latest
+        imagePullPolicy: Never  # For local development
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3000"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        volumeMounts:
+        - name: views-data
+          mountPath: /app/views.json
+          subPath: views.json
+      volumes:
+      - name: views-data
+        configMap:
+          name: views-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: resume-web-service
+  namespace: default
+  labels:
+    app: resume-web
+spec:
+  selector:
+    app: resume-web
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+    name: http
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: views-config
+  namespace: default
+data:
+  views.json: |
+    {"views": 0}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: resume-web-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: resume-web-service
+            port:
+              number: 80

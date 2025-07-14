@@ -14,6 +14,13 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
+// === STATIC FILE SERVING - ADD THIS SECTION ===
+// Serve static files from the parent directory (where index.html is located)
+app.use(express.static(path.join(__dirname, '..')));
+
+// Serve assets directory explicitly
+app.use('/assets', express.static(path.join(__dirname, '..', 'assets')));
+
 // === MySQL RDS Connection ===
 const db = mysql.createPool({
   host: process.env.DB_HOST,
@@ -208,6 +215,7 @@ process.on('SIGINT', () => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`Access your app at: http://localhost:${PORT}`);
 });
 
 // Export app for testing

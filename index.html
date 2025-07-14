@@ -600,272 +600,297 @@
         </section>
 
       </article>
-
-
-
-
-
-      <!--
+<!--
         - #PORTFOLIO
       -->
-
+      <!-- PORTFOLIO SECTION -->
       <article class="portfolio" data-page="portfolio">
 
         <header>
-          <h2 class="h2 article-title">Training & Projects </h2>
+          <h2 class="h2 article-title">Experience & Projects</h2>
         </header>
 
-        <section class="projects">
-
-          <ul class="filter-list">
-
-            <li class="filter-item">
-              <button class="active" data-filter-btn>All</button>
-            </li>
-
-            <li class="filter-item">
-              <button data-filter-btn>Cloud </button>
-            </li>
-
-            <li class="filter-item">
-              <button data-filter-btn>Programming</button>
-            </li>
-
-            <li class="filter-item">
-              <button data-filter-btn>Embedded Systems</button>
-            </li>
-
-          </ul>
-
-          <div class="filter-select-box">
-
-            <button class="filter-select" data-select>
-
-              <div class="select-value" data-selecct-value>Select category</div>
-
-              <div class="select-icon">
-                <ion-icon name="chevron-down"></ion-icon>
-              </div>
-
-            </button>
-
-            <ul class="select-list">
-
-              <li class="select-item">
-                <button data-select-item>All</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Cloud</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Programming</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Embedded Systems</button>
-              </li>
-
-            </ul>
-
+        <!-- Experience Timeline Section -->
+        <section class="timeline experience-timeline">
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="briefcase-outline"></ion-icon>
+            </div>
+            <h3 class="h3">Professional Experience</h3>
           </div>
 
-          <ul class="project-list">
+          <ol class="timeline-list">
+            <li class="timeline-item">
+              <h4 class="h4 timeline-item-title">DevOps Intern – Indraq Innovations</h4>
+              <span>Feb 2025 – May 2025</span>
 
-            <li class="project-item  active" data-filter-item data-category="Cloud">
-              <a href="#">
-
-
-
-                <h3 class="project-title">Cloud Resume Challenge</h3>
-
-                <p class="project-category">
-
-                  AWS S3, AWS CloudFront, AWS Certificate Manager, Origin Access Identity (OAI), CloudWatch.<br>
-                  <br>
-
-                  • Utilized AWS services such as Amazon S3 for static website hosting and AWS Certificate Manager for
-                  SSL/TLS
-                  certificate management in conjunction with CloudFront.<br>
-                  • Enhanced website security by leveraging CloudFront features such as HTTPS support and Origin Access
-                  Identity
-                  (OAI) for restricting access to S3 buckets.<br>
-                  • Deployed personal resume website ,showcasing professional qualifications, projects, and skills.
-                </p>
-              </a>
+              <div class="timeline-text">
+                <div class="timeline-content-card">
+                  <p>Deployed and managed web applications on a VPS using Nginx, PM2, and Docker for high availability
+                    and performance.</p>
+                </div>
+                <div class="timeline-content-card">
+                  <p>Built automated CI/CD pipelines using Jenkins and GitHub Actions to streamline deployment and
+                    version control processes.</p>
+                </div>
+                <div class="timeline-content-card">
+                  <p>Automated daily backups and implemented version control strategies for disaster recovery readiness.
+                  </p>
+                </div>
+                <div class="timeline-content-card">
+                  <p>Configured real-time monitoring and alerting using Prometheus, Grafana, and Loki for proactive
+                    system troubleshooting.</p>
+                </div>
+                <div class="timeline-content-card">
+                  <p>Ensured server security through SSH key authentication, brute-force attack prevention, and malware
+                    detection.</p>
+                </div>
+                <div class="timeline-content-card">
+                  <p>Developed Playwright test cases to verify application stability and performance across deployments.
+                  </p>
+                </div>
+                <div class="timeline-content-card">
+                  <p>Configured Nginx load balancing to distribute traffic and improve application responsiveness.</p>
+                </div>
+                <div class="timeline-content-card">
+                  <p>Implemented Docker-based containerization and deployed applications to Kubernetes, improving
+                    scalability and reliability.</p>
+                </div>
+              </div>
             </li>
-
-            <li class="project-item  active" data-filter-item data-category="Cloud">
-              <a href="#">
-
-
-                <h3 class="project-title">Attendance Marking System with Facial Recognition on AWS</h3>
-
-                <p class="project-category">AWS Rekognition, AWS Lambda, AWS DynamoDB, AWS API Gateway, AWS S3<br>
-                  <br>
-                  • Used AWS Lambda for real-time facial recognition, reducing latency by 40%.<br>
-                  • Implemented secure attendance with facial recognition and encryption.<br>
-                  • Utilized AWS Rekognition for accurate face detection.<br>
-                  • Created API with AWS API Gateway for frontend-backend interaction.<br>
-                  • Stored data in AWS DynamoDB and images in S3.<br>
-                  • Ensured high availability and scalability with AWS services.<br>
-                  • Applied encryption and access controls for privacy compliance.
-                </p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="Programming">
-              <a href="#">
-
-
-
-                <h3 class="project-title">WhatsApp Chatbot Using Python</h3>
-
-                <p class="project-category"> Python, Google Cloud NLP, SQLite<br>
-                  <br>
-                  • Developed a Python-based chatbot for WhatsApp using web scraping techniques.<br>
-                  • Automatically replies to unread messages based on stored responses and detected keywords.<br>
-                  • Integrated Google Cloud NLP for advanced natural language processing and sentiment analysis.<br>
-                  • Stored predefined responses and user interactions in a local SQLite database.<br>
-                  • Deployed the chatbot in a real-world environment to handle multiple conversations
-                  simultaneously.<br>
-                  • Ensured user data privacy with secure storage and processing of messages.
-                </p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="applications">
-              <a href="#">
-
-
-                <h3 class="project-title">Quiz Game Using C++</h3>
-
-                <p class="project-category">C++, File Handling, Data Structures (Arrays, Vectors),HTML, CSS,
-                  JavaScript<br>
-                  <br>
-                  • Developed a responsive website for interactive multiple-choice quiz questions.<br>
-                  • Used C++ for backend logic to validate questions and calculate scores.<br>
-                  • Designed a dynamic UI with HTML, CSS, and JavaScript.<br>
-                  • Stored scores in LocalStorage for tracking high scores.<br>
-                  • Implemented a scoring system to generate final results.<br>
-                  • Displayed a High Score Board for user comparisons.<br>
-                  • Optimized code for smooth performance and fast loading.
-                </p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web design">
-              <a href="#">
-
-
-
-                <h3 class="project-title">Smart Traffic Management using IoT</h3>
-
-                <p class="project-category">Arduino, Sensors, IOT Devices<br>
-                  <br>
-                  • Developed a physical traffic management model using Arduino and sensors.<br>
-                  • Integrated pedestrian signals to improve road safety.<br>
-                  • Implemented real-time data transmission using MQTT protocol.<br>
-                  • Demonstrated a working model to showcase the system's functionality.<br>
-                  • Used IoT devices for communication between sensors and controllers.
-
-                </p>
-
-              </a>
-            </li>
-
-       <!--     <li class="project-item  active" data-filter-item data-category="web design">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-6.png" alt="metaspark" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">MetaSpark</h3>
-
-                <p class="project-category">Web design</p>
-
-              </a>
-            </li>
-            -->
-
-            <!-- <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-7.png" alt="summary" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Summary</h3>
-
-                <p class="project-category">Web development</p>
-
-              </a>
-            </li>-->
-
-            <!-- <li class="project-item  active" data-filter-item data-category="applications">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-8.jpg" alt="task manager" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Task Manager</h3>
-
-                <p class="project-category">Applications</p>
-
-              </a>
-            </li>-->
-
-           <!--  <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-9.png" alt="arrival" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Arrival</h3>
-
-                <p class="project-category">Web development</p>
-
-              </a>
-            </li>-->
-
-          </ul>
-
+          </ol>
         </section>
+
+        <!-- Projects Section -->
+        <section class="projects">
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="code-slash-outline"></ion-icon>
+            </div>
+            <h3 class="h3">Featured Projects</h3>
+          </div>
+
+          <ul class="project-list flex-row">
+
+            <!-- Project 2: Cloud-Native App Deployment Pipeline -->
+            <li class="project-item active" data-filter-item data-category="DevOps">
+              <a href="https://github.com/Bharat-Singhh/Cloud-Native-App-Deployment-Pipeline" class="project-card"
+                target="_blank" style="text-decoration:none;">
+                <div class="project-card-content">
+                  <h3 class="project-title"
+                    style="font-weight:700; font-size:1.3rem; color:var(--orange-yellow-crayola); margin-bottom: 15px;">
+                    Cloud-Native App Deployment Pipeline
+                  </h3>
+                  <div class="timeline-text">
+                    <div class="timeline-content-card">
+                      <p>Containerized Web App using Docker, developed with HTML, CSS, and JavaScript to ensure
+                        portability and environment consistency.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>CI/CD Pipeline Setup using GitHub and Jenkins for automated testing, Docker image builds, and
+                        seamless deployment.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Kubernetes Deployment via ArgoCD for GitOps-based, declarative infrastructure management and
+                        scaling.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Canary Releases & Monitoring integrated with Argo Rollouts, Prometheus, Grafana, and Loki for
+                        performance insights and safe updates.</p>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </li>
+
+            <!-- Project 3: Cloud Resume Challenge Deployment -->
+            <li class="project-item active" data-filter-item data-category="Cloud">
+              <a href="https://github.com/Bharat-Singhh/resume_web" class="project-card" target="_blank"
+                style="text-decoration:none;">
+                <div class="project-card-content">
+                  <h3 class="project-title"
+                    style="font-weight:700; font-size:1.3rem; color:var(--orange-yellow-crayola); margin-bottom: 15px;">
+                    Cloud Resume Challenge Deployment
+                  </h3>
+                  <div class="timeline-text">
+                    <div class="timeline-content-card">
+                      <p>Developed a full-stack application with HTML, CSS, and JavaScript frontend and Node.js backend.
+                      </p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Deployed a static site using AWS EC2, S3, and CloudFront with SSL/TLS for secure and fast
+                        content delivery.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Managed backend services with RDS for database storage and ensured high availability using
+                        Nginx and PM2 on the EC2 instance.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Hosted the site at BharatSingh.cloud, showcasing skills in cloud infrastructure, deployment,
+                        and full-stack development.</p>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </li>
+
+            <!-- Project 1: VPS Deployment Project -->
+            <li class="project-item active" data-filter-item data-category="DevOps">
+              <a href="https://github.com/Bharat-Singhh/vps-deployment-guide" class="project-card" target="_blank"
+                style="text-decoration:none;">
+                <div class="project-card-content">
+                  <h3 class="project-title"
+                    style="font-weight:700; font-size:1.3rem; color:var(--orange-yellow-crayola); margin-bottom: 15px;">
+                    VPS Deployment
+                  </h3>
+                  <div class="timeline-text">
+                    <div class="timeline-content-card">
+                      <p>Full Stack VPS Deployment: Set up and deployed a complete Node.js + MongoDB web application on
+                        a cloud VPS, ensuring backend and frontend services run reliably in production.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Process & Monitoring Setup: Installed and configured PM2 for process management, enabled
+                        real-time monitoring with Prometheus, Grafana, Loki, auto-restarts, and logging of Node.js
+                        services.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Security & DNS Configuration: Hardened the server with UFW firewall rules, configured Nginx as
+                        a reverse proxy, and linked custom domain with DNS setup and SSL (HTTPS) using Let's Encrypt.
+                      </p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>DevOps Tools & Backup: Integrated Jenkins for CI/CD automation, implemented system monitoring,
+                        and scheduled automated backups to ensure reliability and recovery.</p>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </li>
+
+            <!-- Project 4: Attendance Marking System with Facial Recognition -->
+            <li class="project-item active" data-filter-item data-category="Cloud">
+              <div class="project-card">
+                <div class="project-card-content">
+                  <h3 class="project-title"
+                    style="font-weight:700; font-size:1.3rem; color:var(--orange-yellow-crayola); margin-bottom: 15px;">
+                    Face-ID Attendance System | AWS-Powered
+                  </h3>
+                  <div class="timeline-text">
+                    <div class="timeline-content-card">
+                      <p>Built a serverless attendance system leveraging AWS Rekognition for real-time facial detection
+                        and verification.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Implemented backend logic using AWS Lambda for seamless, scalable processing.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Stored attendance data efficiently in DynamoDB for fast and reliable access.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Used API Gateway to securely connect the frontend interface with backend services.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <!-- Project 5: WhatsApp Chatbot Using Python -->
+            <li class="project-item active" data-filter-item data-category="Programming">
+              <div class="project-card">
+                <div class="project-card-content">
+                  <h3 class="project-title"
+                    style="font-weight:700; font-size:1.3rem; color:var(--orange-yellow-crayola); margin-bottom: 15px;">
+                    WhatsApp Chatbot Using Python
+                  </h3>
+                  <div class="timeline-text">
+                    <div class="timeline-content-card">
+                      <p>Built a Python chatbot to auto-reply to unread WhatsApp messages using keyword matching.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Integrated Google Cloud NLP for sentiment analysis and intent detection.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Managed chat data and responses using SQLite database.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Automated conversational flow to enhance user interaction and response accuracy.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <!-- Project 6: Smart Traffic Management project -->
+            <li class="project-item active" data-filter-item data-category="IoT">
+              <div class="project-card">
+                <div class="project-card-content">
+                  <h3 class="project-title"
+                    style="font-weight:700; font-size:1.3rem; color:var(--orange-yellow-crayola); margin-bottom: 15px;">
+                    Smart Traffic Management Project
+                  </h3>
+                  <div class="timeline-text">
+                    <div class="timeline-content-card">
+                      <p>Developed a smart traffic management prototype using Arduino and various sensors.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Implemented MQTT protocol for real-time traffic data communication between devices.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Integrated pedestrian signal controls to improve safety and traffic flow.</p>
+                    </div>
+                    <div class="timeline-content-card">
+                      <p>Enabled IoT-based monitoring and responsive traffic signal adjustments.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        <style>
+          .project-list.flex-row {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+          }
+
+          .project-item {
+            width: 100%;
+          }
+
+          .project-card {
+            background: var(--border-gradient-onyx);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: var(--shadow-2);
+            transition: 0.3s ease;
+            display: block;
+            color: inherit;
+          }
+
+          .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-5);
+          }
+
+          .timeline-content-card {
+            background: var(--border-gradient-onyx);
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            border-radius: 14px;
+            box-shadow: var(--shadow-2);
+            transition: 0.25s ease;
+          }
+
+          .timeline-content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-4);
+          }
+        </style>
 
       </article>
 
-
-
-
-
-      <!--
-        - #BLOG
-      -->
-
-      
       <!--
         - #CONTACT
       -->
@@ -876,14 +901,6 @@
           <h2 class="h2 article-title">Contact</h2>
         </header>
 
-        <!-- <section class="mapbox" data-mapbox>
-          <figure>
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d199666.5651251294!2d-121.58334177520186!3d38.56165006739519!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x809ac672b28397f9%3A0x921f6aaa74197fdb!2sSacramento%2C%20CA%2C%20USA!5e0!3m2!1sen!2sbd!4v1647608789441!5m2!1sen!2sbd"
-              width="400" height="300" loading="lazy"></iframe>
-          </figure>
-        </section> -->
-
         <section class="contact-form">
 
           <h3 class="h3 form-title">Contact Form</h3>
@@ -893,10 +910,12 @@
             <div class="input-wrapper">
               <input type="text" name="fullname" class="form-input" placeholder="Full name" required data-form-input>
 
-              <input type="email" name="email" class="form-input" placeholder="Email address" required data-form-input>
+              <input type="email" name="email" class="form-input" placeholder="Email address" required
+                data-form-input>
             </div>
 
-            <textarea name="message" class="form-input" placeholder="Your Message" required data-form-input></textarea>
+            <textarea name="message" class="form-input" placeholder="Your Message" required
+              data-form-input></textarea>
 
             <button class="form-btn" type="submit" disabled data-form-btn>
               <ion-icon name="paper-plane"></ion-icon>
@@ -908,15 +927,6 @@
         </section>
 
       </article>
-
-    </div>
-
-  </main>
-
-
-
-
-
 
   <!--
     - custom js link

@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const message = form.querySelector('[name="message"]').value;
 
       try {
-        const res = await fetch('http://localhost:3000/api/contact', {
+        const res = await fetch('/api/contact', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, message })
@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // === Visitor Counter ===
-  fetch('http://localhost:3000/api/views')
+  fetch('/api/views')
     .then(res => res.json())
     .then(data => {
       const viewEl = document.getElementById("view-counter");

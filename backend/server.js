@@ -9,12 +9,12 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
 
-// === MySQL RDS Connection =
+// === MySQL RDS Connection ===
 const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -26,6 +26,89 @@ const db = mysql.createPool({
   queueLimit: 0
 });
 
+// === Health Check Endpoints (Required for Kubernetes) ===
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    version: process.env.npm_package_version || '1.0.0',
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+app.get('/ready', (req, res) => {
+  // Check database connection
+  db.query('SELECT 1', (err) => {
+    if (err) {
+      console.error('Database readiness check failed:', err);
+      return res.status(503).json({
+        status: 'not ready',
+        timestamp: new Date().toISOString(),
+        error: 'Database connection failed'
+      });
+    }
+    
+    // Check if views file exists and is accessible
+    try {
+      const viewFile = 'views.json';
+      if (!fs.existsSync(viewFile)) {
+        fs.writeFileSync(viewFile, JSON.stringify({ count: 0 }));
+      }
+      
+      res.status(200).json({
+        status: 'ready',
+        timestamp: new Date().toISOString(),
+        services: {
+          database: 'connected',
+          filesystem: 'accessible'
+        }
+      });
+    } catch (fileError) {
+      res.status(503).json({
+        status: 'not ready',
+        timestamp: new Date().toISOString(),
+        error: 'File system access failed'
+      });
+    }
+  });
+});
+
+// === Metrics Endpoint (for Prometheus monitoring) ===
+app.get('/metrics', (req, res) => {
+  const memUsage = process.memoryUsage();
+  const uptime = process.uptime();
+  
+  let metrics = `# HELP nodejs_memory_usage_bytes Memory usage in bytes
+# TYPE nodejs_memory_usage_bytes gauge
+nodejs_memory_usage_bytes{type="rss"} ${memUsage.rss}
+nodejs_memory_usage_bytes{type="heapTotal"} ${memUsage.heapTotal}
+nodejs_memory_usage_bytes{type="heapUsed"} ${memUsage.heapUsed}
+nodejs_memory_usage_bytes{type="external"} ${memUsage.external}
+
+# HELP nodejs_uptime_seconds Process uptime in seconds
+# TYPE nodejs_uptime_seconds gauge
+nodejs_uptime_seconds ${uptime}
+
+# HELP http_requests_total Total number of HTTP requests
+# TYPE http_requests_total counter
+`;
+
+  // Add view count metric if available
+  try {
+    const viewFile = 'views.json';
+    if (fs.existsSync(viewFile)) {
+      const views = JSON.parse(fs.readFileSync(viewFile));
+      metrics += `http_requests_total{method="GET",endpoint="/api/views"} ${views.count}\n`;
+    }
+  } catch (err) {
+    console.error('Error reading views for metrics:', err);
+  }
+
+  res.set('Content-Type', 'text/plain; version=0.0.4; charset=utf-8');
+  res.send(metrics);
+});
 
 // === Basic Auth Middleware for Admin Panel ===
 const adminAuth = (req, res, next) => {
@@ -55,12 +138,11 @@ app.post('/api/contact', async (req, res) => {
       return res.status(500).send('Database error');
     }
 
-    const transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransporter({
       service: 'gmail',
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_PASS
-
       }
     });
 
@@ -104,6 +186,29 @@ app.get('/api/messages', adminAuth, (req, res) => {
   });
 });
 
+// === Graceful Shutdown Handling ===
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  
+  db.end(() => {
+    console.log('Database connections closed');
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received, shutting down gracefully');
+  
+  db.end(() => {
+    console.log('Database connections closed');
+    process.exit(0);
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
+
+// Export app for testing
+module.exports = app;

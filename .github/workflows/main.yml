@@ -1,0 +1,195 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  IMAGE_NAME: resume-web-app
+  CONTAINER_NAME: resume-web-container
+  DEPLOYMENT_NAME: resume-web-deployment
+  NAMESPACE: default
+  PORT: 3000
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image
+      run: |
+        docker build -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
+        docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:latest
+
+    - name: Test Docker image
+      run: |
+        # Run container in background
+        docker run -d --name test-container -p 3000:3000 ${{ env.IMAGE_NAME }}:latest
+        
+        # Wait for container to start
+        sleep 10
+        
+        # Basic health check
+        curl -f http://localhost:3000/health || exit 1
+        
+        # Clean up test container
+        docker stop test-container
+        docker rm test-container
+
+    - name: Set up Kubernetes tools
+      run: |
+        # Install kubectl
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
+        
+        # Install kind (Kubernetes in Docker) for local testing
+        curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+        chmod +x ./kind
+        sudo mv ./kind /usr/local/bin/kind
+
+    - name: Create local Kubernetes cluster
+      run: |
+        # Create kind cluster
+        kind create cluster --name resume-web-cluster
+        
+        # Set kubectl context
+        kubectl cluster-info --context kind-resume-web-cluster
+
+    - name: Load Docker image to kind cluster
+      run: |
+        # Load the built image into kind cluster
+        kind load docker-image ${{ env.IMAGE_NAME }}:latest --name resume-web-cluster
+
+    - name: Create Kubernetes manifests
+      run: |
+        # Create deployment manifest
+        cat <<EOF > deployment.yaml
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: ${{ env.DEPLOYMENT_NAME }}
+          namespace: ${{ env.NAMESPACE }}
+          labels:
+            app: resume-web
+        spec:
+          replicas: 2
+          selector:
+            matchLabels:
+              app: resume-web
+          template:
+            metadata:
+              labels:
+                app: resume-web
+            spec:
+              containers:
+              - name: resume-web
+                image: ${{ env.IMAGE_NAME }}:latest
+                imagePullPolicy: Never
+                ports:
+                - containerPort: ${{ env.PORT }}
+                env:
+                - name: NODE_ENV
+                  value: "production"
+                - name: PORT
+                  value: "${{ env.PORT }}"
+                livenessProbe:
+                  httpGet:
+                    path: /health
+                    port: ${{ env.PORT }}
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                readinessProbe:
+                  httpGet:
+                    path: /health
+                    port: ${{ env.PORT }}
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
+                resources:
+                  requests:
+                    memory: "128Mi"
+                    cpu: "100m"
+                  limits:
+                    memory: "256Mi"
+                    cpu: "200m"
+        ---
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: resume-web-service
+          namespace: ${{ env.NAMESPACE }}
+        spec:
+          selector:
+            app: resume-web
+          ports:
+          - protocol: TCP
+            port: 80
+            targetPort: ${{ env.PORT }}
+          type: ClusterIP
+        EOF
+
+    - name: Deploy to Kubernetes
+      run: |
+        # Apply the deployment
+        kubectl apply -f deployment.yaml
+        
+        # Wait for deployment to be ready
+        kubectl wait --for=condition=available --timeout=300s deployment/${{ env.DEPLOYMENT_NAME }}
+
+    - name: Check deployment status
+      run: |
+        echo "=== Deployment Status ==="
+        kubectl get deployments -n ${{ env.NAMESPACE }}
+        
+        echo "=== Pods Status ==="
+        kubectl get pods -n ${{ env.NAMESPACE }} -l app=resume-web
+        
+        echo "=== Service Status ==="
+        kubectl get services -n ${{ env.NAMESPACE }}
+        
+        echo "=== Deployment Details ==="
+        kubectl describe deployment/${{ env.DEPLOYMENT_NAME }} -n ${{ env.NAMESPACE }}
+        
+        echo "=== Recent Events ==="
+        kubectl get events -n ${{ env.NAMESPACE }} --sort-by=.metadata.creationTimestamp
+
+    - name: Test deployment
+      run: |
+        # Port forward to test the service
+        kubectl port-forward service/resume-web-service 8080:80 -n ${{ env.NAMESPACE }} &
+        sleep 5
+        
+        # Test the application
+        curl -f http://localhost:8080/health || exit 1
+        echo "Application is responding correctly!"
+        
+        # Kill port-forward process
+        pkill -f "kubectl port-forward"
+
+    - name: Rollback on failure
+      if: failure()
+      run: |
+        echo "Deployment failed, checking rollback options..."
+        kubectl rollout history deployment/${{ env.DEPLOYMENT_NAME }} -n ${{ env.NAMESPACE }}
+        
+        # If there's a previous revision, rollback
+        if kubectl rollout history deployment/${{ env.DEPLOYMENT_NAME }} -n ${{ env.NAMESPACE }} | grep -q "2"; then
+          echo "Rolling back to previous version..."
+          kubectl rollout undo deployment/${{ env.DEPLOYMENT_NAME }} -n ${{ env.NAMESPACE }}
+          kubectl rollout status deployment/${{ env.DEPLOYMENT_NAME }} -n ${{ env.NAMESPACE }}
+        fi
+
+    - name: Cleanup on failure
+      if: failure()
+      run: |
+        echo "Cleaning up resources..."
+        kubectl delete -f deployment.yaml --ignore-not-found=true
+        kind delete cluster --name resume-web-cluster
